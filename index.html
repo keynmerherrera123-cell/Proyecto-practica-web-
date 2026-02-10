@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Proyecto - Keynmer</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/606/606259.png">
+</head>
+<body>
+<audio id="sonidoClic" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+<div class="card">
+        <h1 id="tituloBienvenida">Centro de Control</h1>
+        <p>Bienvenido, desarrollador.</p>  
+        <input type="text" id="nombreUsuario" placeholder="Escribe tu nombre">
+
+        <div class="stats">
+            <p>Nivel de Poder: <span id="contador">0</span></p>
+        </div>
+<div id="contenedorFrase" style="margin-bottom: 20px; font-style: italic; color: #94a3b8; font-size: 0.9em;">
+    <p id="textoFrase">Cargando sabiduría...</p>
+</div>
+        <button onclick="aumentar()">Subir de Nivel</button>
+        <button onclick="reiniciar()" style="background: #ef4444; margin-top: 10px;">Reiniciar Progreso</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
