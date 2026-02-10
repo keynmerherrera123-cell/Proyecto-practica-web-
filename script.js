@@ -7,7 +7,7 @@ let jugador = {
 
 // Función que se encarga solo de actualizar lo que el usuario ve (UI)
 function actualizarInterfaz() {
-    const titulo = document.getElementById("tituloBienvenida");
+    const titulo = document.getElementById("tituloBienvena");
     const contador = document.getElementById("contador");
     const tarjeta = document.querySelector(".card"); // Asegúrate de tener esta variable
     const input = document.getElementById("nombreUsuario");
