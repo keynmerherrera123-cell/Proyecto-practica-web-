@@ -53,19 +53,28 @@ async function obtenerFrase() {
 }
 
 function aumentar() {
-    // Lógica de datos
-     jugador.puntos += jugador.multiplicador;    
+    // 1. Lógica de datos (Sumar puntos)
+    jugador.puntos += jugador.multiplicador;
+
+    // 2. Manejo del nombre
     const inputNombre = document.getElementById("nombreUsuario");
-    if (inputNombre.value !== "") {
+    
+    // Si el cuadro NO está vacío y el jugador aún no tiene nombre guardado
+    if (inputNombre.value !== "" && jugador.nombre === "") {
         jugador.nombre = inputNombre.value;
         localStorage.setItem("usuario", jugador.nombre);
-        inputNombre.value = "";
+        
+        // Ocultamos el input solo después de guardar el nombre
+        inputNombre.style.display = "none"; 
     }
 
-    // Guardamos los puntos
+    // 3. Guardamos los puntos y actualizamos la vista
     localStorage.setItem("puntos", jugador.puntos);
-    // --- AQUÍ TERMINA LA FUNCIÓN AUMENTAR ---
-} 
+    actualizarInterfaz();
+
+    // 4. LIMPIAR AL FINAL (Esto era lo que te borraba el nombre antes de tiempo)
+    inputNombre.value = ""; 
+}
 
 function comprarMejora() {
     if (jugador.puntos >= 10) {
