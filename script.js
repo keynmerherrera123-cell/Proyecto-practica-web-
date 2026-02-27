@@ -63,7 +63,7 @@ function aumentar() {
 
     // Guardamos los puntos
     localStorage.setItem("puntos", jugador.puntos);
-    
+
     function comprarMejora() {
     if (jugador.puntos >= 10) {
         jugador.puntos -= 10;
@@ -77,6 +77,15 @@ function aumentar() {
 
 // Vinculamos la función al botón naranja
 document.getElementById("btnMejora").onclick = comprarMejora;
+
+// Escuchar la tecla Enter para que el usuario no tenga que usar el mouse
+const inputNombreEvent = document.getElementById("nombreUsuario");
+
+inputNombreEvent.addEventListener("keypress", function (e) {
+    if (e.key === 'Enter') {
+        aumentar(); 
+    }
+});
 
     // Feedback visual y auditivo
     const sonido = document.getElementById("sonidoClic");
