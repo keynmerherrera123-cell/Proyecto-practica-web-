@@ -2,9 +2,9 @@
 let jugador = {
     nombre: localStorage.getItem("usuario") || "",
     puntos: parseInt(localStorage.getItem("puntos")) || 0,
-    rango: "Novato"
+    rango: "Novato",
+    multiplicador: 1 
 };
-
 // Función que se encarga solo de actualizar lo que el usuario ve (UI)
 function actualizarInterfaz() {
     const titulo = document.getElementById("idtituloBienvena");
@@ -13,6 +13,7 @@ function actualizarInterfaz() {
     const input = document.getElementById("nombreUsuario");
 
     contador.innerText = jugador.puntos;
+    document.getElementById("puntosPorClic").innerText = jugador.multiplicador;
     
     // 1. Manejo del nombre
     if (jugador.nombre !== "") {
@@ -52,8 +53,7 @@ async function obtenerFrase() {
 
 function aumentar() {
     // Lógica de datos
-    jugador.puntos++;
-    
+     jugador.puntos += jugador.multiplicador;    
     const inputNombre = document.getElementById("nombreUsuario");
     if (inputNombre.value !== "") {
         jugador.nombre = inputNombre.value;
@@ -63,6 +63,20 @@ function aumentar() {
 
     // Guardamos los puntos
     localStorage.setItem("puntos", jugador.puntos);
+    
+    function comprarMejora() {
+    if (jugador.puntos >= 10) {
+        jugador.puntos -= 10;
+        jugador.multiplicador += 1;
+        actualizarInterfaz();
+        alert("¡Poder aumentado!");
+    } else {
+        alert("Te faltan puntos...");
+    }
+}
+
+// Vinculamos la función al botón naranja
+document.getElementById("btnMejora").onclick = comprarMejora;
 
     // Feedback visual y auditivo
     const sonido = document.getElementById("sonidoClic");
