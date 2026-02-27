@@ -52,28 +52,27 @@ async function obtenerFrase() {
     }
 }
 
-function aumentar() {
-    // 1. Lógica de datos (Sumar puntos)
-    jugador.puntos += jugador.multiplicador;
-
-    // 2. Manejo del nombre
+function accederAlPanel() {
     const inputNombre = document.getElementById("nombreUsuario");
     
-    // Si el cuadro NO está vacío y el jugador aún no tiene nombre guardado
-    if (inputNombre.value !== "" && jugador.nombre === "") {
+    if (inputNombre.value !== "") {
         jugador.nombre = inputNombre.value;
         localStorage.setItem("usuario", jugador.nombre);
         
-        // Ocultamos el input solo después de guardar el nombre
-        inputNombre.style.display = "none"; 
+        actualizarInterfaz();
+        inputNombre.value = ""; // Limpiamos el cuadro
     }
+}
 
-    // 3. Guardamos los puntos y actualizamos la vista
-    localStorage.setItem("puntos", jugador.puntos);
-    actualizarInterfaz();
-
-    // 4. LIMPIAR AL FINAL (Esto era lo que te borraba el nombre antes de tiempo)
-    inputNombre.value = ""; 
+function aumentar() {
+    // Solo suma puntos si el jugador ya se registró
+    if (jugador.nombre !== "") {
+        jugador.puntos += jugador.multiplicador;
+        localStorage.setItem("puntos", jugador.puntos);
+        actualizarInterfaz();
+    } else {
+        alert("Escribe tu nombre y presiona Enter para empezar.");
+    }
 }
 
 function comprarMejora() {
@@ -90,12 +89,15 @@ function comprarMejora() {
 // Vinculamos el botón naranja
 document.getElementById("btnMejora").onclick = comprarMejora;
 
-// Buscamos el cuadro de texto y le asignamos el evento Enter
 const inputNombreEvent = document.getElementById("nombreUsuario");
 
 inputNombreEvent.addEventListener("keypress", function (e) {
-    if (e.key === 'Enter') {
+    // Solo actúa si presionas Enter Y si el jugador aún NO tiene nombre
+    if (e.key === 'Enter' && jugador.nombre === "") {
         e.preventDefault(); 
-        aumentar();        
+        accederAlPanel();
+    } else if (e.key === 'Enter') {
+        // Si ya tiene nombre, evitamos que el Enter haga cualquier cosa
+        e.preventDefault();
     }
 });
