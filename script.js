@@ -1,103 +1,62 @@
-// Centralizamos la información en un objeto
-let jugador = {
-    nombre: localStorage.getItem("usuario") || "",
-    puntos: parseInt(localStorage.getItem("puntos")) || 0,
-    rango: "Novato",
-    multiplicador: 1 
-};
-const inputNombreGlobal = document.getElementById("nombreUsuario");
-// Función que se encarga solo de actualizar lo que el usuario ve (UI)
-function actualizarInterfaz() {
-    const titulo = document.getElementById("idtituloBienvena");
-    const contador = document.getElementById("contador");
-    const tarjeta = document.querySelector(".card"); // Asegúrate de tener esta variable
-    const input = document.getElementById("nombreUsuario");
+// Intentamos recuperar los datos del "disco duro" del navegador
+const datosGuardados = localStorage.getItem('empleadosIndustriales');
 
-    contador.innerText = jugador.puntos;
-    document.getElementById("puntosPorClic").innerText = jugador.multiplicador;
+// Si existen datos, los usamos; si no, usamos la lista inicial
+let baseDeDatos = datosGuardados ? JSON.parse(datosGuardados) : [
+    { nombre: "Keynmer Daniel", cedula: "28123456", cargo: "Ingeniero de Sistemas", estado: "Activo", departamento: "IT / Refinería" }
+];
+
+// 2. FUNCIÓN MAESTRA DE BÚSQUEDA
+function buscarEmpleado(cedulaBuscada) {
+    const monitor = document.getElementById("infoEmpleado");
     
-    // 1. Manejo del nombre
-    if (jugador.nombre !== "") {
-        titulo.innerText = `Panel de ${jugador.nombre}`;
-        if (input) input.style.display = "none";
-    }
+    // Buscamos ignorando espacios y forzando texto
+    const resultado = baseDeDatos.find(emp => String(emp.cedula).trim() === String(cedulaBuscada).trim());
 
-    // 2. Manejo de colores (ESTO ES LO QUE SE MANTENDRÁ AL REFRESCAR)
-    if (jugador.puntos >= 10) {
-        contador.style.color = "#fbbf24";
-        contador.style.fontWeight = "bold";
-    }
-
-    if (jugador.puntos >= 20) {
-        tarjeta.style.boxShadow = "0 0 30px #38bdf8";
-        tarjeta.style.borderColor = "#38bdf8";
-    }
-}
-
-// Llamamos a la actualización apenas carga la página
-window.onload = actualizarInterfaz;
-async function obtenerFrase() {
-    try {
-        // Nueva API de consejos/frases (más confiable)
-        const respuesta = await fetch("https://api.adviceslip.com/advice");
-        const datos = await respuesta.json();
-        
-        // Esta API devuelve los datos con una estructura diferente (datos.slip.advice)
-        document.getElementById("textoFrase").innerText = `"${datos.slip.advice}"`;
-        
-        console.log("¡Frase nueva recibida!");
-    } catch (error) {
-        document.getElementById("textoFrase").innerText = "Sigue adelante, desarrollador.";
-        console.error("Error al conectar:", error);
-    }
-}
-
-function accederAlPanel() {
-    const inputNombre = document.getElementById("nombreUsuario");
-    
-    if (inputNombre.value !== "") {
-        jugador.nombre = inputNombre.value;
-        localStorage.setItem("usuario", jugador.nombre);
-        
-        actualizarInterfaz();
-        inputNombre.value = ""; // Limpiamos el cuadro
-    }
-}
-
-function aumentar() {
-    // Solo suma puntos si el jugador ya se registró
-    if (jugador.nombre !== "") {
-        jugador.puntos += jugador.multiplicador;
-        localStorage.setItem("puntos", jugador.puntos);
-        actualizarInterfaz();
+    if (resultado) {
+        monitor.innerHTML = `
+            <div class="ficha-empleado">
+                <h2 style="color: #4ade80;">✅ Personal Identificado</h2>
+                <p><strong>Nombre:</strong> ${resultado.nombre}</p>
+                <p><strong>Cargo:</strong> ${resultado.cargo}</p>
+                <p><strong>Dpto:</strong> ${resultado.departamento}</p>
+                <p><strong>Estatus:</strong> <span class="badge">${resultado.estado}</span></p>
+            </div>
+        `;
     } else {
-        alert("Escribe tu nombre y presiona Enter para empezar.");
+        monitor.innerHTML = `<p style="color: #ff4d4d;">❌ Error: Registro no encontrado en el servidor.</p>`;
     }
 }
 
-function comprarMejora() {
-    if (jugador.puntos >= 10) {
-        jugador.puntos -= 10;
-        jugador.multiplicador += 1;
-        actualizarInterfaz();
-        alert("¡Poder aumentado!");
-    } else {
-        alert("Te faltan puntos...");
-    }
-}
-
-// Vinculamos el botón naranja
-document.getElementById("btnMejora").onclick = comprarMejora;
-
-const inputNombreEvent = document.getElementById("nombreUsuario");
-
-inputNombreEvent.addEventListener("keypress", function (e) {
-    // Solo actúa si presionas Enter Y si el jugador aún NO tiene nombre
-    if (e.key === 'Enter' && jugador.nombre === "") {
-        e.preventDefault(); 
-        accederAlPanel();
-    } else if (e.key === 'Enter') {
-        // Si ya tiene nombre, evitamos que el Enter haga cualquier cosa
+// 3. ESCUCHA DEL TERMINAL (ENTER)
+document.getElementById("nombreUsuario").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
         e.preventDefault();
+        buscarEmpleado(this.value);
+        this.value = ""; // Limpiamos el buscador
     }
 });
+function registrarNuevo() {
+    const nombre = document.getElementById("regNombre").value;
+    const cedula = document.getElementById("regCedula").value;
+    const cargo = document.getElementById("regCargo").value;
+
+    if(nombre && cedula && cargo) {
+        baseDeDatos.push({
+            nombre: nombre,
+            cedula: cedula,
+            cargo: cargo,
+            estado: "Activo",
+            departamento: "General"
+        });
+
+        // 💾 ESTA LÍNEA ES LA MAGIA: Guarda la lista actualizada en el navegador
+        localStorage.setItem('empleadosIndustriales', JSON.stringify(baseDeDatos));
+
+        alert("✅ Empleado Registrado y Guardado");
+        
+        document.getElementById("regNombre").value = "";
+        document.getElementById("regCedula").value = "";
+        document.getElementById("regCargo").value = "";
+    }
+}

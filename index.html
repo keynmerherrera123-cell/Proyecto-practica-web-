@@ -11,21 +11,29 @@
 <body>
 <audio id="sonidoClic" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
 <div class="card">
-        <h1 id="idtituloBienvena">Mi app esta en la nube!</h1>
-        <p>Bienvenido, desarrollador.</p>  
-        <input type="text" id="nombreUsuario" placeholder="Escribe tu nombre">
-
-        <div class="stats">
-            <p>Nivel de Poder: <span id="contador">0</span></p>
-        </div>
-<div id="contenedorFrase" style="margin-bottom: 20px; font-style: italic; color: #94a3b8; font-size: 0.9em;">
-    <p id="textoFrase">Cargando sabiduría...</p>
+    <h1 id="idTituloBienvenida">Sistema de Gestión de Personal</h1>
+    <p>Terminal de Consulta Industrial</p>
+<div class="registro-panel">
+    <h3>Registrar Nuevo Operador</h3>
+    <input type="text" id="regNombre" placeholder="Nombre Completo">
+    <input type="text" id="regCedula" placeholder="Cédula">
+    <input type="text" id="regCargo" placeholder="Cargo">
+    <button onclick="registrarNuevo()">Guardar en Base de Datos</button>
 </div>
-        <button onclick="aumentar()">Subir de Nivel</button>
-        <p>Puntos por clic: <span id="puntosPorClic">1</span></p>
-<button id="btnMejora" style="background-color: #f39c12;">Comprar Mejora (Cuesta 10 pts)</button>
-        <button onclick="reiniciar()" style="background: #ef4444; margin-top: 10px;">Reiniciar Progreso</button>
+    <!-- Buscador Principal -->
+    <div class="search-container">
+        <input type="text" id="nombreUsuario" placeholder="Ingrese Cédula del Operador...">
     </div>
+
+    <hr> <!-- Una línea divisoria elegante -->
+
+    <!-- Monitor de Datos -->
+    <div id="monitorIndustrial">
+        <div id="infoEmpleado">
+            <p style="color: #94a3b8;">Esperando entrada de datos en terminal...</p>
+        </div>
+    </div>
+</div>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,86 +1,130 @@
+/* 1. Configuración de Base (Colores de Fondo y Fuente) */
+:root {
+    --fondo-oscuro: #0f172a; /* Azul petróleo muy oscuro */
+    --tarjeta-bg: #1e293b;   /* Azul grisáceo para el panel */
+    --primario: #3b82f6;      /* Azul brillante */
+    --exito: #4ade80;        /* Verde neón para datos positivos */
+    --error: #ef4444;        /* Rojo para alertas */
+    --texto: #f8fafc;        /* Blanco roto para no cansar la vista */
+    --subtexto: #94a3b8;     /* Gris para descripciones */
+}
+
 body {
-        background-color: #0f172a; /* Azul muy oscuro */
-        display: flex;             /* ACTIVAMOS FLEXBOX */
-        justify-content: center;    /* Centra horizontalmente */
-        align-items: center;        /* Centra verticalmente */
-        height: 100vh;             /* Usa todo el alto de la pantalla */
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-    }
-
-    .card {
-        background-color: #1e293b;
-        padding: 40px;
-        border-radius: 20px;
-        text-align: center;
-        color: white;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        border: 1px solid #334155;
-        width: 80%;
-    }
-
-    h1 {
-        color: #38bdf8; /* Azul claro */
-        margin-bottom: 10px;
-    }
-
-    button {
-        background: linear-gradient(135deg, #38bdf8, #818cf8);
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 10px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: transform 0.2s;
-        margin-top: 20px;
-    }
-
-    button:hover {
-        transform: translateY(-3px); /* Efecto de que flota */
-    }
-    /* Cuando la pantalla sea menor a 600px (celulares) */
-@media (max-width: 600px) {
-    .card {
-        width: 90%; /* La tarjeta ocupa casi todo el ancho */
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 1.5rem; /* El título se hace más pequeño */
-    }
+    background-color: var(--fondo-oscuro);
+    color: var(--texto);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
 }
-input {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #334155;
-    background-color: #0f172a;
-    color: white;
-    margin-bottom: 15px;
-    width: 80%; /* Para que no ocupe todo el ancho de la tarjeta */
+
+/* 2. El Panel Principal (La Card) */
+.card {
+    background-color: var(--tarjeta-bg);
+    width: 90%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-input:focus {
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: var(--primario);
+}
+
+p {
+    color: var(--subtexto);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+/* 3. Estilo del Buscador (Terminal de Entrada) */
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    background: #0f172a;
+    border: 2px solid #334155;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
     outline: none;
-    border-color: #38bdf8; /* Brilla cuando haces clic para escribir */
+    transition: border-color 0.3s;
+    box-sizing: border-box; /* Importante para que no se salga del borde */
 }
-button:active {
-    transform: scale(0.95); /* El botón se encoge un poquito al tocarlo */
-    filter: brightness(1.2); /* Brilla un poco más */
-}
-/* ... lo que ya tenías antes ... */
 
+input[type="text"]:focus {
+    border-color: var(--primario);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #334155;
+    margin: 25px 0;
+}
+
+/* 4. La Ficha del Empleado (Resultado de Búsqueda) */
+.ficha-empleado {
+    text-align: left;
+    background: rgba(15, 23, 42, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid var(--exito);
+    animation: aparecer 0.5s ease-out; /* Efecto suave al aparecer */
+}
+
+.ficha-empleado h2 {
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.ficha-empleado p {
+    margin: 8px 0;
+    color: var(--texto);
+}
+
+.ficha-empleado strong {
+    color: var(--subtexto);
+    font-weight: 500;
+}
+
+/* 5. Etiquetas de Estatus */
+.badge {
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--exito);
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    border: 1px solid var(--exito);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+/* Animación para que los datos aparezcan con estilo */
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primario);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s; /* Hace que el efecto de hundirse sea suave */
-    margin: 5px; /* Les da aire entre ellos para que no estén pegados */
+    margin-top: 10px;
+    transition: background 0.3s;
 }
 
 button:hover {
-    filter: brightness(1.1); /* Brilla un poco cuando pasas el mouse */
-}
-
-button:active {
-    transform: scale(0.95); /* Se hunde un poquito al hacer clic */
+    background-color: #2563eb; /* Un azul un poco más oscuro al pasar el mouse */
 }
